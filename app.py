@@ -1,14 +1,15 @@
+# app.py
 import streamlit as st
 
 from ciphers.caesar import encrypt as caesar_encrypt, decrypt as caesar_decrypt
 from ciphers.playfair import encrypt as playfair_encrypt, decrypt as playfair_decrypt
-from ciphers.vigenere import encrypt as vigenere_encrypt, decrypt as vigenere_decrypt
+from ciphers.vigenere import encrypt as vigenere_encrypt, decrypt as vigenere_decrypt, vigenere_encrypt_with_table
 from ciphers.railfence import encrypt as rail_encrypt, decrypt as rail_decrypt
 from ciphers.affine import encrypt as affine_encrypt, decrypt as affine_decrypt
 from ciphers.monoalpha import encrypt as mono_encrypt, decrypt as mono_decrypt
+import pandas as pd
 
 st.set_page_config(page_title="Classical Ciphers", layout="centered")
-
 st.title("Classical Ciphers Tool")
 st.write("Educational implementation of classical cryptography algorithms.")
 
@@ -31,6 +32,8 @@ text = st.text_area("Enter Text")
 if st.button("Run"):
     if not text:
         st.error("Text is required")
+    elif cipher == "Vigenere Cipher" and (not key.isalpha()):
+        st.error("Key sirf alphabets honi chahiye")
     else:
         try:
             if cipher == "Caesar Cipher":
@@ -43,7 +46,14 @@ if st.button("Run"):
                 result = playfair_encrypt(text, key) if mode == "Encrypt" else playfair_decrypt(text, key)
 
             elif cipher == "Vigenere Cipher":
-                result = vigenere_encrypt(text, key) if mode == "Encrypt" else vigenere_decrypt(text, key)
+                if mode == "Encrypt":
+                    # Show dry-run table + final cipher
+                    df = vigenere_encrypt_with_table(text, key)
+                    st.subheader("Vigenere Encryption Dry Run")
+                    st.dataframe(df)
+                    result = "".join(df["Cipher Text"])
+                else:
+                    result = vigenere_decrypt(text, key)
 
             elif cipher == "Rail Fence Cipher":
                 if not key.isdigit():
@@ -57,7 +67,7 @@ if st.button("Run"):
             elif cipher == "Monoalphabetic Cipher":
                 result = mono_encrypt(text, key) if mode == "Encrypt" else mono_decrypt(text, key)
 
-            st.success("Result")
+            st.subheader("Result")
             st.code(result)
 
         except Exception:

@@ -1,99 +1,93 @@
-# vigenere_dryrun.py
+# vigenere.py
+import pandas as pd
 
-# -------------------------------
-# VIGENERE CIPHER WITH DRY RUN
-# -------------------------------
+# =================================
+# A–Z TABLE (A=0 … Z=25)
+# =================================
+def alphabet_table():
+    return {chr(ord('A') + i): i for i in range(26)}
 
+# =================================
+# KEY GENERATION
+# =================================
 def generate_key(text, key):
-    key = key.lower()
-    result = ""
+    key = key.upper()
+    new_key = ""
     j = 0
-    for c in text:
-        if c.isalpha():
-            result += key[j % len(key)]
+    for char in text:
+        if char.isalpha():
+            new_key += key[j % len(key)]
             j += 1
         else:
-            result += c
-    return result
+            new_key += char
+    return new_key
 
-def encrypt(text, key, dry_run=False):
-    if not key.isalpha():
-        raise ValueError("Key must only contain letters")
-    
-    key = generate_key(text, key)
-    result = ""
-    
-    if dry_run:
-        print("\n--- Encryption Dry Run ---")
-        print(f"{'Text':<10}{'Key':<10}{'Shift':<10}{'Result':<10}")
-    
-    for i in range(len(text)):
-        if text[i].isalpha():
-            shift = ord(key[i]) - ord('a')
-            base = ord('A') if text[i].isupper() else ord('a')
-            encrypted_char = chr((ord(text[i]) - base + shift) % 26 + base)
-            result += encrypted_char
-            if dry_run:
-                print(f"{text[i]:<10}{key[i]:<10}{shift:<10}{encrypted_char:<10}")
+# =================================
+# BASIC ENCRYPT
+# =================================
+def encrypt(plaintext, key):
+    table = alphabet_table()
+    plaintext = plaintext.upper()
+    key = generate_key(plaintext, key)
+
+    cipher = ""
+    for i in range(len(plaintext)):
+        if plaintext[i].isalpha():
+            total = (table[plaintext[i]] + table[key[i]]) % 26
+            cipher += chr(total + ord('A'))
         else:
-            result += text[i]
-            if dry_run:
-                print(f"{text[i]:<10}{'-':<10}{'-':<10}{text[i]:<10}")
-    return result
+            cipher += plaintext[i]
+    return cipher
 
-def decrypt(text, key, dry_run=False):
-    if not key.isalpha():
-        raise ValueError("Key must only contain letters")
-    
-    key = generate_key(text, key)
-    result = ""
-    
-    if dry_run:
-        print("\n--- Decryption Dry Run ---")
-        print(f"{'Text':<10}{'Key':<10}{'Shift':<10}{'Result':<10}")
-    
-    for i in range(len(text)):
-        if text[i].isalpha():
-            shift = ord(key[i]) - ord('a')
-            base = ord('A') if text[i].isupper() else ord('a')
-            decrypted_char = chr((ord(text[i]) - base - shift) % 26 + base)
-            result += decrypted_char
-            if dry_run:
-                print(f"{text[i]:<10}{key[i]:<10}{shift:<10}{decrypted_char:<10}")
+# =================================
+# BASIC DECRYPT
+# =================================
+def decrypt(ciphertext, key):
+    table = alphabet_table()
+    ciphertext = ciphertext.upper()
+    key = generate_key(ciphertext, key)
+
+    plain = ""
+    for i in range(len(ciphertext)):
+        if ciphertext[i].isalpha():
+            total = (table[ciphertext[i]] - table[key[i]]) % 26
+            plain += chr(total + ord('A'))
         else:
-            result += text[i]
-            if dry_run:
-                print(f"{text[i]:<10}{'-':<10}{'-':<10}{text[i]:<10}")
-    return result
+            plain += ciphertext[i]
+    return plain
 
-# -------------------------------
-# MAIN MENU
-# -------------------------------
-def main():
-    while True:
-        print("\n--- Vigenere Cipher Project ---")
-        print("1. Encrypt")
-        print("2. Decrypt")
-        print("3. Exit")
-        choice = input("Choose an option: ")
+# =================================
+# ENCRYPT WITH FULL DRY RUN TABLE
+# =================================
+def vigenere_encrypt_with_table(plaintext, key):
+    table = alphabet_table()
+    plaintext = plaintext.upper()
+    key = generate_key(plaintext, key)
 
-        if choice == "1":
-            text = input("Enter text: ")
-            key = input("Enter key (letters only): ")
-            dry = input("Do you want dry run? (y/n): ").lower() == 'y'
-            encrypted = encrypt(text, key, dry_run=dry)
-            print("\nFinal Encrypted Text:", encrypted)
-        elif choice == "2":
-            text = input("Enter text: ")
-            key = input("Enter key (letters only): ")
-            dry = input("Do you want dry run? (y/n): ").lower() == 'y'
-            decrypted = decrypt(text, key, dry_run=dry)
-            print("\nFinal Decrypted Text:", decrypted)
-        elif choice == "3":
-            print("Exiting...")
-            break
+    data = {
+        "Plain Text": [],
+        "Plain Value": [],
+        "Key": [],
+        "Key Value": [],
+        "Sum": [],
+        "Cipher Text": []
+    }
+
+    for i in range(len(plaintext)):
+        if plaintext[i].isalpha():
+            p_val = table[plaintext[i]]
+            k_val = table[key[i]]
+            total = (p_val + k_val) % 26
+            cipher_char = chr(total + ord('A'))
         else:
-            print("Invalid choice! Try again.")
+            p_val = k_val = total = "-"
+            cipher_char = plaintext[i]
 
-if __name__ == "__main__":
-    main()
+        data["Plain Text"].append(plaintext[i])
+        data["Plain Value"].append(p_val)
+        data["Key"].append(key[i])
+        data["Key Value"].append(k_val)
+        data["Sum"].append(total)
+        data["Cipher Text"].append(cipher_char)
+
+    return pd.DataFrame(data)
