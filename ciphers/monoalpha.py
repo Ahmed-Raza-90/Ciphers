@@ -10,7 +10,6 @@ def encrypt(text, key):
             result += c
     return result
 
-
 def decrypt(text, key):
     if len(key) != 26:
         raise ValueError
