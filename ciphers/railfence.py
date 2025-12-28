@@ -10,7 +10,6 @@ def encrypt(text, rails):
         row += step
     return ''.join(fence)
 
-
 def decrypt(text, rails):
     pattern = list(range(rails)) + list(range(rails-2, 0, -1))
     rail_len = [0]*rails

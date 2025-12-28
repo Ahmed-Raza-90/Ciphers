@@ -92,5 +92,3 @@ def vigenere_encrypt_with_table(plaintext, key):
         data["Cipher Text"].append(cipher_char)
 
     return pd.DataFrame(data)
-
-
