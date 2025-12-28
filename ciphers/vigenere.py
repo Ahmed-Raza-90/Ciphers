@@ -1,4 +1,3 @@
-# vigenere.py
 import pandas as pd
 
 # =================================
@@ -7,7 +6,6 @@ import pandas as pd
 def alphabet_table():
     return {chr(ord('A') + i): i for i in range(26)}
    
-
 # =================================
 # KEY GENERATION
 # =================================

@@ -33,7 +33,7 @@ if st.button("Run"):
     if not text:
         st.error("Text is required")
     elif cipher == "Vigenere Cipher" and (not key.isalpha()):
-        st.error("Key sirf alphabets honi chahiye")
+        st.error("Key must be an alphabets")
     else:
         try:
             if cipher == "Caesar Cipher":
