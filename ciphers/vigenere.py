@@ -92,3 +92,39 @@ def vigenere_encrypt_with_table(plaintext, key):
         data["Cipher Text"].append(cipher_char)
 
     return pd.DataFrame(data)
+
+# =================================
+# DECRYPT WITH FULL DRY RUN TABLE
+# =================================
+def vigenere_decrypt_with_table(ciphertext, key):
+    table = alphabet_table()
+    ciphertext = ciphertext.upper()
+    key = generate_key(ciphertext, key)
+
+    data = {
+        "Cipher Text": [],
+        "Cipher Value": [],
+        "Key": [],
+        "Key Value": [],
+        "Difference": [],
+        "Plain Text": []
+    }
+
+    for i in range(len(ciphertext)):
+        if ciphertext[i].isalpha():
+            c_val = table[ciphertext[i]]
+            k_val = table[key[i]]
+            total = (c_val - k_val) % 26
+            plain_char = chr(total + ord('A'))
+        else:
+            c_val = k_val = total = "-"
+            plain_char = ciphertext[i]
+
+        data["Cipher Text"].append(ciphertext[i])
+        data["Cipher Value"].append(c_val)
+        data["Key"].append(key[i])
+        data["Key Value"].append(k_val)
+        data["Difference"].append(total)
+        data["Plain Text"].append(plain_char)
+
+    return pd.DataFrame(data)

@@ -3,7 +3,7 @@ import streamlit as st
 
 from ciphers.caesar import encrypt as caesar_encrypt, decrypt as caesar_decrypt
 from ciphers.playfair import encrypt as playfair_encrypt, decrypt as playfair_decrypt
-from ciphers.vigenere import encrypt as vigenere_encrypt, decrypt as vigenere_decrypt, vigenere_encrypt_with_table
+from ciphers.vigenere import encrypt as vigenere_encrypt, decrypt as vigenere_decrypt, vigenere_encrypt_with_table, vigenere_decrypt_with_table
 from ciphers.railfence import encrypt as rail_encrypt, decrypt as rail_decrypt
 from ciphers.affine import encrypt as affine_encrypt, decrypt as affine_decrypt
 from ciphers.monoalpha import encrypt as mono_encrypt, decrypt as mono_decrypt
@@ -50,10 +50,14 @@ if st.button("Run"):
                     # Show dry-run table + final cipher
                     df = vigenere_encrypt_with_table(text, key)
                     st.subheader("Vigenere Encryption Dry Run")
-                    st.dataframe(df)
+                    st.dataframe(df, use_container_width=True)
                     result = "".join(df["Cipher Text"])
                 else:
-                    result = vigenere_decrypt(text, key)
+                    # Show decryption dry-run table + final plain text
+                    df = vigenere_decrypt_with_table(text, key)
+                    st.subheader("Vigenere Decryption Dry Run")
+                    st.dataframe(df, use_container_width=True)
+                    result = "".join(df["Plain Text"])
 
             elif cipher == "Rail Fence Cipher":
                 if not key.isdigit():
