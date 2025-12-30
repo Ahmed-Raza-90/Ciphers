@@ -449,7 +449,7 @@ from ciphers.permutation import encrypt as permutation_encrypt, decrypt as permu
 from ciphers.hill import hill_encrypt, hill_decrypt
 
 # =========================
-# STREAMLIT UI
+# STREAMLIT UI 
 # =========================
 st.set_page_config(page_title="Classical Ciphers", layout="centered")
 st.title("Classical Ciphers Tool")
