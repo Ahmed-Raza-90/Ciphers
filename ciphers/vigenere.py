@@ -1,14 +1,8 @@
 import pandas as pd
 
-# =================================
-# A–Z TABLE (A=0 … Z=25)
-# =================================
 def alphabet_table():
     return {chr(ord('A') + i): i for i in range(26)}
-   
-# =================================
-# KEY GENERATION
-# =================================
+
 def generate_key(text, key):
     key = key.upper()
     new_key = ""
@@ -21,9 +15,6 @@ def generate_key(text, key):
             new_key += char
     return new_key
 
-# =================================
-# BASIC ENCRYPT
-# =================================
 def encrypt(plaintext, key):
     table = alphabet_table()
     plaintext = plaintext.upper()
@@ -38,9 +29,6 @@ def encrypt(plaintext, key):
             cipher += plaintext[i]
     return cipher
 
-# =================================
-# BASIC DECRYPT
-# =================================
 def decrypt(ciphertext, key):
     table = alphabet_table()
     ciphertext = ciphertext.upper()
@@ -55,9 +43,6 @@ def decrypt(ciphertext, key):
             plain += ciphertext[i]
     return plain
 
-# =================================
-# ENCRYPT WITH FULL DRY RUN TABLE
-# =================================
 def vigenere_encrypt_with_table(plaintext, key):
     table = alphabet_table()
     plaintext = plaintext.upper()
@@ -91,9 +76,6 @@ def vigenere_encrypt_with_table(plaintext, key):
 
     return pd.DataFrame(data)
 
-# =================================
-# DECRYPT WITH FULL DRY RUN TABLE
-# =================================
 def vigenere_decrypt_with_table(ciphertext, key):
     table = alphabet_table()
     ciphertext = ciphertext.upper()

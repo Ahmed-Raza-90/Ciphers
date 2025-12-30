@@ -1,18 +1,12 @@
 import pandas as pd
 
-# =================================
 # ENCRYPTION
-# =================================
 def encrypt(text, key):
-    """
-    Columnar Transposition Cipher
-    """
     text = text.replace(" ", "").upper()
     key = key.upper()
     n_cols = len(key)
-    n_rows = -(-len(text) // n_cols)  # ceiling division
+    n_rows = -(-len(text) // n_cols)
 
-    # Fill the grid row-wise
     grid = []
     idx = 0
     for r in range(n_rows):
@@ -22,13 +16,11 @@ def encrypt(text, key):
                 row.append(text[idx])
                 idx += 1
             else:
-                row.append("X")  # padding
+                row.append("X")
         grid.append(row)
 
-    # Dry run table
     df = pd.DataFrame(grid, columns=list(key))
     
-    # Read columns based on alphabetical order of key
     sorted_key = sorted([(k, i) for i, k in enumerate(key)], key=lambda x: x[0])
     cipher_text = ""
     for _, col_idx in sorted_key:
@@ -37,16 +29,13 @@ def encrypt(text, key):
 
     return df, cipher_text
 
-# =================================
 # DECRYPTION
-# =================================
 def decrypt(text, key):
     text = text.replace(" ", "").upper()
     key = key.upper()
     n_cols = len(key)
-    n_rows = -(-len(text) // n_cols)  # ceiling division
+    n_rows = -(-len(text) // n_cols)  
 
-    # Determine column lengths
     sorted_key = sorted([(k, i) for i, k in enumerate(key)], key=lambda x: x[0])
     cols = {}
     idx = 0
@@ -55,7 +44,6 @@ def decrypt(text, key):
         cols[col_idx] = list(text[idx:idx+col_len])
         idx += col_len
 
-    # Reconstruct grid row-wise
     grid = []
     for r in range(n_rows):
         row = []

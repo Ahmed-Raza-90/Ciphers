@@ -1,17 +1,11 @@
 import pandas as pd
 
-# =================================
-# HELPER FUNCTIONS
-# =================================
 def letter_to_num(c):
     return ord(c.upper()) - ord('A')
 
 def num_to_letter(n):
     return chr(n + ord('A'))
 
-# =================================
-# ENCRYPTION / DECRYPTION (SAME FUNCTION)
-# =================================
 def vernam_cipher(text, key):
     if not key or len(key) != len(text.replace(" ", "")):
         raise ValueError("Key length must match text length (excluding spaces)")
@@ -24,7 +18,7 @@ def vernam_cipher(text, key):
         if c.isalpha():
             t_num = letter_to_num(c)
             k_num = letter_to_num(key[key_index])
-            cipher_num = t_num ^ k_num  # XOR
+            cipher_num = t_num ^ k_num  
             cipher_char = num_to_letter(cipher_num)
             dry_run["Plain Char"].append(c.upper())
             dry_run["Key Char"].append(key[key_index].upper())
@@ -37,14 +31,8 @@ def vernam_cipher(text, key):
     df = pd.DataFrame(dry_run)
     return df, cipher_text
 
-# =================================
-# ENCRYPT FUNCTION
-# =================================
 def encrypt(text, key):
     return vernam_cipher(text, key)
 
-# =================================
-# DECRYPT FUNCTION
-# =================================
 def decrypt(text, key):
     return vernam_cipher(text, key)

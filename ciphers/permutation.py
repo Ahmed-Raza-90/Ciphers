@@ -1,8 +1,5 @@
 import pandas as pd
 
-# =========================
-# FLEXIBLE KEY PARSER
-# =========================
 def parse_key(key):
     if isinstance(key, str):
         key = key.strip()
@@ -14,9 +11,7 @@ def parse_key(key):
     else:
         raise ValueError("Key must be a list or comma-separated string")
 
-# =========================
 # ENCRYPTION
-# =========================
 def encrypt(text, key):
     text = text.replace(" ", "").upper()
     key = parse_key(key)
@@ -40,9 +35,7 @@ def encrypt(text, key):
     df = pd.DataFrame(dry_run)
     return df, cipher_text
 
-# =========================
 # DECRYPTION
-# =========================
 def decrypt(text, key):
     text = text.replace(" ", "").upper()
     key = parse_key(key)

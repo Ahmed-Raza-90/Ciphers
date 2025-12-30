@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 def _pad_letters(letters, depth):
     cycle = 2 * (depth - 1)
     if cycle == 0:
@@ -12,24 +11,15 @@ def _pad_letters(letters, depth):
 
     return letters
 
-
-# =========================
 # ENCRYPTION WITH ZIGZAG TABLE
-# =========================
 def encrypt_with_table(text, depth):
     if depth <= 1:
         return pd.DataFrame(), text
 
-    # extract letters only
     letters = [c for c in text if c != " "]
-
-    # pad letters using cycle logic
     letters = _pad_letters(letters, depth)
-
     n = len(letters)
-
     table = [["" for _ in range(n)] for _ in range(depth)]
-
     row = 0
     direction = 1
 
@@ -43,14 +33,12 @@ def encrypt_with_table(text, depth):
 
         row += direction
 
-    # read cipher row-wise
     cipher_letters = ""
     for r in range(depth):
         for c in range(n):
             if table[r][c]:
                 cipher_letters += table[r][c]
 
-    # put spaces back
     result = []
     idx = 0
     for ch in text:
@@ -60,7 +48,6 @@ def encrypt_with_table(text, depth):
             result.append(cipher_letters[idx])
             idx += 1
 
-    # if padding added, append remaining X at end
     while idx < len(cipher_letters):
         result.append(cipher_letters[idx])
         idx += 1
@@ -70,10 +57,7 @@ def encrypt_with_table(text, depth):
 
     return df, "".join(result)
 
-
-# =========================
 # DECRYPTION WITH ZIGZAG TABLE
-# =========================
 def decrypt_with_table(cipher, depth):
     if depth <= 1:
         return pd.DataFrame(), cipher
@@ -83,7 +67,6 @@ def decrypt_with_table(cipher, depth):
 
     table = [["" for _ in range(n)] for _ in range(depth)]
 
-    # mark zigzag path
     row = 0
     direction = 1
     for col in range(n):
@@ -96,7 +79,6 @@ def decrypt_with_table(cipher, depth):
 
         row += direction
 
-    # fill rails row-wise
     idx = 0
     for r in range(depth):
         for c in range(n):
@@ -104,7 +86,6 @@ def decrypt_with_table(cipher, depth):
                 table[r][c] = letters[idx]
                 idx += 1
 
-    # read zigzag to get plain letters
     row = 0
     direction = 1
     plain_letters = []
@@ -119,7 +100,6 @@ def decrypt_with_table(cipher, depth):
 
         row += direction
 
-    # put spaces back
     result = []
     idx = 0
     for ch in cipher:
@@ -129,7 +109,6 @@ def decrypt_with_table(cipher, depth):
             result.append(plain_letters[idx])
             idx += 1
 
-    # remove padding X
     final_text = "".join(result).rstrip("X")
 
     df = pd.DataFrame(table)
@@ -137,10 +116,6 @@ def decrypt_with_table(cipher, depth):
 
     return df, final_text
 
-
-# =========================
-# SIMPLE WRAPPERS
-# =========================
 def encrypt(text, depth):
     return encrypt_with_table(text, depth)[1]
 

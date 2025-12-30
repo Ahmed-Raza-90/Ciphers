@@ -1,17 +1,11 @@
 import pandas as pd
 
-# =================================
-# HELPER FUNCTIONS
-# =================================
 def letter_to_num(c):
     return ord(c.upper()) - ord('A')
 
 def num_to_letter(n):
     return chr(n + ord('A'))
 
-# =================================
-# GENERATE MAPPING FROM KEY
-# =================================
 def generate_mapping(key):
     if not key or len(key) != 26:
         raise ValueError("Key must be 26 unique letters")
@@ -22,9 +16,7 @@ def generate_mapping(key):
     reverse_mapping = {v: k for k, v in mapping.items()}
     return mapping, reverse_mapping
 
-# =================================
 # ENCRYPTION
-# =================================
 def encrypt(text, key):
     mapping, _ = generate_mapping(key)
     dry_run = {"Plain Char": [], "Cipher Char": []}
@@ -39,9 +31,7 @@ def encrypt(text, key):
     df = pd.DataFrame(dry_run)
     return df, cipher_text
 
-# =================================
 # DECRYPTION
-# =================================
 def decrypt(text, key):
     _, reverse_mapping = generate_mapping(key)
     dry_run = {"Cipher Char": [], "Plain Char": []}

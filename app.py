@@ -1,444 +1,11 @@
-# import streamlit as st
-# import pandas as pd
-
-# from ciphers.caesar import (
-#     encrypt_with_table as caesar_encrypt_with_table,
-#     decrypt_with_table as caesar_decrypt_with_table
-# )
-
-# from ciphers.playfair import (
-#     encrypt_with_table as playfair_encrypt_with_table,
-#     decrypt_with_table as playfair_decrypt_with_table
-# )
-
-# from ciphers.vigenere import (
-#     vigenere_encrypt_with_table,
-#     vigenere_decrypt_with_table
-# )
-
-# from ciphers.railfence import (
-#     encrypt_with_table as rail_encrypt_with_table,
-#     decrypt_with_table as rail_decrypt_with_table
-# )
-
-# from ciphers.affine import encrypt as affine_encrypt, decrypt as affine_decrypt
-# from ciphers.monoalpha import encrypt as mono_encrypt, decrypt as mono_decrypt
-# from ciphers.vernam import encrypt as vernam_encrypt, decrypt as vernam_decrypt
-# from ciphers.stream import encrypt as stream_encrypt, decrypt as stream_decrypt
-# from ciphers.blockcipher import encrypt as block_encrypt, decrypt as block_decrypt
-# from ciphers.columnar import encrypt as columnar_encrypt, decrypt as columnar_decrypt
-# from ciphers.permutation import encrypt as permutation_encrypt, decrypt as permutation_decrypt
-
-
-# # =========================
-# # STREAMLIT UI
-# # =========================
-# st.set_page_config(page_title="Classical Ciphers", layout="centered")
-# st.title("Classical Ciphers Tool")
-# st.write("Educational implementation of cryptography algorithms.")
-
-
-# cipher = st.sidebar.selectbox(
-#     "Select Cipher",
-#     [
-#         "Caesar Cipher",
-#         "Playfair Cipher",
-#         "Vigenere Cipher",
-#         "Rail Fence Cipher",
-#         "Affine Cipher",
-#         "Monoalphabetic Cipher",
-#         "Vernam Cipher",
-#         "Stream Cipher",
-#         "Block Cipher",
-#         "Columnar Cipher",
-#         "Permutation Cipher"
-#     ]
-# )
-
-# mode = st.sidebar.radio("Mode", ["Encrypt", "Decrypt"])
-# key = st.sidebar.text_input("Key")
-# text = st.text_area("Enter Text")
-
-
-# # =========================
-# # KEY HINTS
-# # =========================
-# if cipher == "Caesar Cipher":
-#     st.sidebar.info("Key: Number (shift value), e.g., 3")
-
-# elif cipher == "Playfair Cipher":
-#     st.sidebar.info("Key: Any word or phrase (letters only, J is replaced with I)")
-
-# elif cipher == "Vigenere Cipher":
-#     st.sidebar.info("Key: Letters only, repeated to match text length")
-
-# elif cipher == "Rail Fence Cipher":
-#     st.sidebar.info("Key: Number of rails, e.g., 3")
-
-# elif cipher == "Affine Cipher":
-#     st.sidebar.info("Key format: a,b (e.g., 5,8) | 'a' must be coprime with 26")
-
-# elif cipher == "Monoalphabetic Cipher":
-#     st.sidebar.info("Key: 26 unique letters (e.g., QWERTYUIOPASDFGHJKLZXCVBNM)")
-
-# elif cipher == "Vernam Cipher":
-#     st.sidebar.info("Key: Same length as text (letters only, spaces ignored)")
-
-# elif cipher == "Stream Cipher":
-#     st.sidebar.info("Key: Letters only, key repeats automatically")
-
-# elif cipher == "Block Cipher":
-#     st.sidebar.info("Key: Letters only, block size = key length")
-
-# elif cipher == "Columnar Cipher":
-#     st.sidebar.info("Key: Letters only, defines column order")
-
-# elif cipher == "Permutation Cipher":
-#     st.sidebar.info("Key: Comma-separated indices, e.g., 3,0,2,1")
-
-
-# # =========================
-# # RUN BUTTON
-# # =========================
-# if st.button("Run"):
-#     if not text:
-#         st.error("Text is required")
-
-#     elif cipher == "Vigenere Cipher" and not key.isalpha():
-#         st.error("Key must contain alphabets only")
-
-#     else:
-#         try:
-#             # CAESAR
-#             if cipher == "Caesar Cipher":
-#                 if not key.isdigit():
-#                     st.error("Key must be a number")
-#                 else:
-#                     shift = int(key)
-#                     df = caesar_encrypt_with_table(text, shift) if mode == "Encrypt" else caesar_decrypt_with_table(text, shift)
-#                     st.dataframe(df, use_container_width=True)
-#                     result = "".join(df["Cipher Char"] if mode == "Encrypt" else df["Plain Char"])
-
-#             # PLAYFAIR
-#             elif cipher == "Playfair Cipher":
-#                 matrix, df, result = playfair_encrypt_with_table(text, key) if mode == "Encrypt" else playfair_decrypt_with_table(text, key)
-#                 st.subheader("5x5 Matrix")
-#                 st.dataframe(matrix, use_container_width=True)
-#                 st.dataframe(df, use_container_width=True)
-
-#             # VIGENERE
-#             elif cipher == "Vigenere Cipher":
-#                 df = vigenere_encrypt_with_table(text, key) if mode == "Encrypt" else vigenere_decrypt_with_table(text, key)
-#                 st.dataframe(df, use_container_width=True)
-#                 result = "".join(df["Cipher Text"] if mode == "Encrypt" else df["Plain Text"])
-
-#             # RAIL FENCE
-#             elif cipher == "Rail Fence Cipher":
-#                 if not key.isdigit():
-#                     st.error("Key must be a number")
-#                 else:
-#                     df, result = rail_encrypt_with_table(text, int(key)) if mode == "Encrypt" else rail_decrypt_with_table(text, int(key))
-#                     st.dataframe(df, use_container_width=True)
-
-#             # AFFINE
-#             elif cipher == "Affine Cipher":
-#                 df, result = affine_encrypt(text, key) if mode == "Encrypt" else affine_decrypt(text, key)
-#                 st.dataframe(df, use_container_width=True)
-
-#             # MONOALPHABETIC
-#             elif cipher == "Monoalphabetic Cipher":
-#                 df, result = mono_encrypt(text, key) if mode == "Encrypt" else mono_decrypt(text, key)
-#                 st.dataframe(df, use_container_width=True)
-
-#             # VERNAM
-#             elif cipher == "Vernam Cipher":
-#                 df, result = vernam_encrypt(text, key) if mode == "Encrypt" else vernam_decrypt(text, key)
-#                 st.dataframe(df, use_container_width=True)
-
-#             # STREAM
-#             elif cipher == "Stream Cipher":
-#                 df, result = stream_encrypt(text, key) if mode == "Encrypt" else stream_decrypt(text, key)
-#                 st.dataframe(df, use_container_width=True)
-
-#             # BLOCK
-#             elif cipher == "Block Cipher":
-#                 df, result = block_encrypt(text, key) if mode == "Encrypt" else block_decrypt(text, key)
-#                 st.dataframe(df, use_container_width=True)
-
-#             # COLUMNAR
-#             elif cipher == "Columnar Cipher":
-#                 df, result = columnar_encrypt(text, key) if mode == "Encrypt" else columnar_decrypt(text, key)
-#                 st.dataframe(df, use_container_width=True)
-
-#             # PERMUTATION
-#             elif cipher == "Permutation Cipher":
-#                 df, result = permutation_encrypt(text, key) if mode == "Encrypt" else permutation_decrypt(text, key)
-#                 st.dataframe(df, use_container_width=True)
-
-#             st.subheader("Result")
-#             st.code(result)
-
-#         except Exception as e:
-#             st.error(f"Invalid input or key: {e}")
-
-
-# # =========================
-# # FOOTER
-# # =========================
-# st.markdown("""
-# <style>
-# .footer {
-#     position: fixed;
-#     left: 0;
-#     bottom: 0;
-#     width: 100%;
-#     text-align: center;
-#     padding: 8px 0;
-#     font-size: 14px;
-#     color: white;
-#     border-top: 1px solid #555;
-#     background: #555;
-#     z-index: 999;
-# }
-# .footer img {
-#     width: 16px;
-#     vertical-align: middle;
-# }
-# </style>
-
-# <div class="footer">
-#     Made with ❤️ by
-#     <a href="https://github.com/Ahmed-Raza-90/" target="_blank" style="color:#000; text-decoration:none;">
-#         <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png">
-#         Ahmed Raza
-#     </a>
-# </div>
-# """, unsafe_allow_html=True)
-
-
-
-
-
-
-
-# import streamlit as st
-# import pandas as pd
-
-# from ciphers.caesar import encrypt_with_table as caesar_encrypt_with_table, decrypt_with_table as caesar_decrypt_with_table
-# from ciphers.playfair import encrypt_with_table as playfair_encrypt_with_table, decrypt_with_table as playfair_decrypt_with_table
-# from ciphers.vigenere import vigenere_encrypt_with_table, vigenere_decrypt_with_table
-# from ciphers.railfence import encrypt_with_table as rail_encrypt_with_table, decrypt_with_table as rail_decrypt_with_table
-
-# from ciphers.affine import encrypt as affine_encrypt, decrypt as affine_decrypt
-# from ciphers.monoalpha import encrypt as mono_encrypt, decrypt as mono_decrypt
-# from ciphers.vernam import encrypt as vernam_encrypt, decrypt as vernam_decrypt
-# from ciphers.stream import encrypt as stream_encrypt, decrypt as stream_decrypt
-# from ciphers.blockcipher import encrypt as block_encrypt, decrypt as block_decrypt
-# from ciphers.columnar import encrypt as columnar_encrypt, decrypt as columnar_decrypt
-# from ciphers.permutation import encrypt as permutation_encrypt, decrypt as permutation_decrypt
-# from ciphers.hill import hill_encrypt, hill_decrypt   # ✅ Hill Cipher Added
-
-# # =========================
-# # STREAMLIT UI
-# # =========================
-# st.set_page_config(page_title="Classical Ciphers", layout="centered")
-# st.title("Classical Ciphers Tool")
-# st.write("Educational implementation of cryptography algorithms.")
-
-# cipher = st.sidebar.selectbox(
-#     "Select Cipher",
-#     [
-#         "Caesar Cipher",
-#         "Playfair Cipher",
-#         "Vigenere Cipher",
-#         "Rail Fence Cipher",
-#         "Affine Cipher",
-#         "Monoalphabetic Cipher",
-#         "Vernam Cipher",
-#         "Stream Cipher",
-#         "Block Cipher",
-#         "Columnar Cipher",
-#         "Permutation Cipher",
-#         "Hill Cipher"     # ✅ ADDED
-#     ]
-# )
-
-# mode = st.sidebar.radio("Mode", ["Encrypt", "Decrypt"])
-# text = st.text_area("Enter Text")
-
-# # =========================
-# # HILL CIPHER INPUT
-# # =========================
-# if cipher == "Hill Cipher":
-#     size = st.sidebar.selectbox("Matrix Size", [2, 3])
-#     st.sidebar.info("Enter key matrix row-wise (numbers 0–25)")
-
-#     hill_rows = []
-#     for i in range(size):
-#         hill_rows.append(
-#             st.sidebar.text_input(f"Row {i+1} (space separated)")
-#         )
-# else:
-#     key = st.sidebar.text_input("Key")
-
-# # =========================
-# # KEY HINTS
-# # =========================
-# cipher_key_hints = {
-#     "Caesar Cipher": "Key: Number (shift value), e.g., 3",
-#     "Playfair Cipher": "Key: Any word or phrase (letters only, J is replaced with I)",
-#     "Vigenere Cipher": "Key: Letters only",
-#     "Rail Fence Cipher": "Key: Number of rails, e.g., 3",
-#     "Affine Cipher": "Key format: a,b (e.g., 5,8)",
-#     "Monoalphabetic Cipher": "Key: 26 unique letters",
-#     "Vernam Cipher": "Key: Same length as text",
-#     "Stream Cipher": "Key: Letters only",
-#     "Block Cipher": "Key: Letters only",
-#     "Columnar Cipher": "Key: Letters only",
-#     "Permutation Cipher": "Key: Comma-separated indices",
-#     "Hill Cipher": "Key: Matrix must be invertible mod 26"
-# }
-
-# if cipher in cipher_key_hints:
-#     st.sidebar.info(cipher_key_hints[cipher])
-
-# # =========================
-# # RUN
-# # =========================
-# if st.button("Run"):
-#     try:
-#         # ================= HILL =================
-#         if cipher == "Hill Cipher":
-#             key_matrix = []
-#             for row in hill_rows:
-#                 nums = list(map(int, row.split()))
-#                 if len(nums) != size:
-#                     st.error("Invalid matrix row")
-#                     st.stop()
-#                 key_matrix.append(nums)
-
-#             # Hill Cipher with step-by-step dry run
-#             df, result = hill_encrypt(text, key_matrix) if mode == "Encrypt" else hill_decrypt(text, key_matrix)
-            
-#             # Display step-by-step calculation
-#             st.subheader("Step-by-Step Calculation")
-#             st.dataframe(df, use_container_width=True)
-            
-#             # Display final result
-#             st.subheader("Result")
-#             st.code(result)
-
-#         # ================= CAESAR =================
-#         elif cipher == "Caesar Cipher":
-#             shift = int(key)
-#             df = caesar_encrypt_with_table(text, shift) if mode == "Encrypt" else caesar_decrypt_with_table(text, shift)
-#             st.dataframe(df)
-#             st.code("".join(df["Cipher Char"] if mode == "Encrypt" else df["Plain Char"]))
-
-#         elif cipher == "Playfair Cipher":
-#             matrix, df, result = playfair_encrypt_with_table(text, key) if mode == "Encrypt" else playfair_decrypt_with_table(text, key)
-#             st.dataframe(matrix)
-#             st.dataframe(df)
-#             st.code(result)
-
-#         elif cipher == "Vigenere Cipher":
-#             df = vigenere_encrypt_with_table(text, key) if mode == "Encrypt" else vigenere_decrypt_with_table(text, key)
-#             st.dataframe(df)
-#             st.code("".join(df["Cipher Text"] if mode == "Encrypt" else df["Plain Text"]))
-
-#         elif cipher == "Rail Fence Cipher":
-#             df, result = rail_encrypt_with_table(text, int(key)) if mode == "Encrypt" else rail_decrypt_with_table(text, int(key))
-#             st.dataframe(df)
-#             st.code(result)
-
-#         elif cipher == "Affine Cipher":
-#             df, result = affine_encrypt(text, key) if mode == "Encrypt" else affine_decrypt(text, key)
-#             st.dataframe(df)
-#             st.code(result)
-
-#         elif cipher == "Monoalphabetic Cipher":
-#             df, result = mono_encrypt(text, key) if mode == "Encrypt" else mono_decrypt(text, key)
-#             st.dataframe(df)
-#             st.code(result)
-
-#         elif cipher == "Vernam Cipher":
-#             df, result = vernam_encrypt(text, key) if mode == "Encrypt" else vernam_decrypt(text, key)
-#             st.dataframe(df)
-#             st.code(result)
-
-#         elif cipher == "Stream Cipher":
-#             df, result = stream_encrypt(text, key) if mode == "Encrypt" else stream_decrypt(text, key)
-#             st.dataframe(df)
-#             st.code(result)
-
-#         elif cipher == "Block Cipher":
-#             df, result = block_encrypt(text, key) if mode == "Encrypt" else block_decrypt(text, key)
-#             st.dataframe(df)
-#             st.code(result)
-
-#         elif cipher == "Columnar Cipher":
-#             df, result = columnar_encrypt(text, key) if mode == "Encrypt" else columnar_decrypt(text, key)
-#             st.dataframe(df)
-#             st.code(result)
-
-#         elif cipher == "Permutation Cipher":
-#             df, result = permutation_encrypt(text, key) if mode == "Encrypt" else permutation_decrypt(text, key)
-#             st.dataframe(df)
-#             st.code(result)
-
-#     except Exception as e:
-#         st.error(e)
-
-# # =========================
-# # FOOTER
-# # =========================
-# st.markdown("""
-# <style>
-# .footer {
-#     position: fixed;
-#     left: 0;
-#     bottom: 0;
-#     width: 100%;
-#     text-align: center;
-#     padding: 8px 0;
-#     font-size: 14px;
-#     color: white;
-#     border-top: 1px solid #555;
-#     background: #555;
-#     z-index: 999;
-# }
-# .footer img {
-#     width: 16px;
-#     vertical-align: middle;
-# }
-# </style>
-
-# <div class="footer">
-#     Made with ❤️ by
-#     <a href="https://github.com/Ahmed-Raza-90/" target="_blank" style="color:#000; text-decoration:none;">
-#         <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png">
-#         Ahmed Raza
-#     </a>
-# </div>
-# """, unsafe_allow_html=True)
-
-
-
-
-
-
-
 import streamlit as st
 import pandas as pd
 
-# =========================
 # IMPORT CIPHERS
-# =========================
 from ciphers.caesar import encrypt_with_table as caesar_encrypt_with_table, decrypt_with_table as caesar_decrypt_with_table
 from ciphers.playfair import encrypt_with_table as playfair_encrypt_with_table, decrypt_with_table as playfair_decrypt_with_table
 from ciphers.vigenere import vigenere_encrypt_with_table, vigenere_decrypt_with_table
 from ciphers.railfence import encrypt_with_table as rail_encrypt_with_table, decrypt_with_table as rail_decrypt_with_table
-
 from ciphers.affine import encrypt as affine_encrypt, decrypt as affine_decrypt
 from ciphers.monoalpha import encrypt as mono_encrypt, decrypt as mono_decrypt
 from ciphers.vernam import encrypt as vernam_encrypt, decrypt as vernam_decrypt
@@ -448,11 +15,9 @@ from ciphers.columnar import encrypt as columnar_encrypt, decrypt as columnar_de
 from ciphers.permutation import encrypt as permutation_encrypt, decrypt as permutation_decrypt
 from ciphers.hill import hill_encrypt, hill_decrypt
 
-# =========================
 # STREAMLIT UI 
-# =========================
-st.set_page_config(page_title="Classical Ciphers", layout="centered")
-st.title("Classical Ciphers Tool")
+st.set_page_config(page_title="Ciphers", layout="centered")
+st.title("Ciphers Tool")
 st.write("Educational implementation of cryptography algorithms.")
 
 cipher = st.sidebar.selectbox(
@@ -476,9 +41,7 @@ cipher = st.sidebar.selectbox(
 mode = st.sidebar.radio("Mode", ["Encrypt", "Decrypt"])
 text = st.text_area("Enter Text")
 
-# =========================
 # HILL CIPHER INPUT
-# =========================
 if cipher == "Hill Cipher":
     size = st.sidebar.selectbox("Matrix Size", [2, 3])
     st.sidebar.info("Enter key matrix row-wise (numbers 0–25)")
@@ -490,9 +53,7 @@ if cipher == "Hill Cipher":
 else:
     key = st.sidebar.text_input("Key")
 
-# =========================
 # KEY HINTS
-# =========================
 cipher_key_hints = {
     "Caesar Cipher": "Key: Number (shift value), e.g., 3",
     "Playfair Cipher": "Key: Any word or phrase (letters only, J is replaced with I)",
@@ -510,12 +71,10 @@ cipher_key_hints = {
 if cipher in cipher_key_hints:
     st.sidebar.info(cipher_key_hints[cipher])
 
-# =========================
 # RUN BUTTON
-# =========================
 if st.button("Run"):
     try:
-        # ================= HILL =================
+        # HILL
         if cipher == "Hill Cipher":
             key_matrix = []
             for row in hill_rows:
@@ -530,14 +89,14 @@ if st.button("Run"):
             st.subheader("Result")
             st.code(result)
 
-        # ================= CAESAR =================
+        # CAESAR
         elif cipher == "Caesar Cipher":
             shift = int(key)
             df = caesar_encrypt_with_table(text, shift) if mode == "Encrypt" else caesar_decrypt_with_table(text, shift)
             st.dataframe(df)
             st.code("".join(df["Cipher Char"] if mode == "Encrypt" else df["Plain Char"]))
 
-        # ================= PLAYFAIR =================
+        # PLAYFAIR
         elif cipher == "Playfair Cipher":
             matrix, df, result = playfair_encrypt_with_table(text, key) if mode == "Encrypt" else playfair_decrypt_with_table(text, key)
             st.subheader("Playfair Matrix")
@@ -547,55 +106,55 @@ if st.button("Run"):
             st.subheader("Result")
             st.code(result)
 
-        # ================= VIGENERE =================
+        # VIGENERE
         elif cipher == "Vigenere Cipher":
             df = vigenere_encrypt_with_table(text, key) if mode == "Encrypt" else vigenere_decrypt_with_table(text, key)
             st.dataframe(df)
             st.code("".join(df["Cipher Text"] if mode == "Encrypt" else df["Plain Text"]))
 
-        # ================= RAIL FENCE =================
+        # RAIL FENCE 
         elif cipher == "Rail Fence Cipher":
             df, result = rail_encrypt_with_table(text, int(key)) if mode == "Encrypt" else rail_decrypt_with_table(text, int(key))
             st.dataframe(df)
             st.code(result)
 
-        # ================= AFFINE =================
+        # AFFINE
         elif cipher == "Affine Cipher":
             df, result = affine_encrypt(text, key) if mode == "Encrypt" else affine_decrypt(text, key)
             st.dataframe(df)
             st.code(result)
 
-        # ================= MONOALPHA =================
+        # MONOALPHA 
         elif cipher == "Monoalphabetic Cipher":
             df, result = mono_encrypt(text, key) if mode == "Encrypt" else mono_decrypt(text, key)
             st.dataframe(df)
             st.code(result)
 
-        # ================= VERNAM =================
+        # VERNAM
         elif cipher == "Vernam Cipher":
             df, result = vernam_encrypt(text, key) if mode == "Encrypt" else vernam_decrypt(text, key)
             st.dataframe(df)
             st.code(result)
 
-        # ================= STREAM =================
+        # STREAM
         elif cipher == "Stream Cipher":
             df, result = stream_encrypt(text, key) if mode == "Encrypt" else stream_decrypt(text, key)
             st.dataframe(df)
             st.code(result)
 
-        # ================= BLOCK =================
+        # BLOCK
         elif cipher == "Block Cipher":
             df, result = block_encrypt(text, key) if mode == "Encrypt" else block_decrypt(text, key)
             st.dataframe(df)
             st.code(result)
 
-        # ================= COLUMNAR =================
+        # COLUMNAR
         elif cipher == "Columnar Cipher":
             df, result = columnar_encrypt(text, key) if mode == "Encrypt" else columnar_decrypt(text, key)
             st.dataframe(df)
             st.code(result)
 
-        # ================= PERMUTATION =================
+        # PERMUTATION
         elif cipher == "Permutation Cipher":
             df, result = permutation_encrypt(text, key) if mode == "Encrypt" else permutation_decrypt(text, key)
             st.dataframe(df)
@@ -604,9 +163,7 @@ if st.button("Run"):
     except Exception as e:
         st.error(e)
 
-# =========================
 # FOOTER
-# =========================
 st.markdown("""
 <style>
 .footer {
@@ -617,9 +174,9 @@ st.markdown("""
     text-align: center;
     padding: 8px 0;
     font-size: 14px;
-    color: white;
-    border-top: 1px solid #555;
-    background: #555;
+    color: #000;
+    border-top: 1px solid #b3b3b3;
+    background: #dcdcdc;
     z-index: 999;
 }
 .footer img {

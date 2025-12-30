@@ -1,10 +1,6 @@
 import pandas as pd
 
-# =================================
-# HELPER FUNCTIONS
-# =================================
 def mod_inverse(a, m):
-    # a^-1 mod m
     for i in range(1, m):
         if (a * i) % m == 1:
             return i
@@ -16,9 +12,7 @@ def letter_to_num(c):
 def num_to_letter(n):
     return chr(n + ord('A'))
 
-# =================================
 # ENCRYPTION
-# =================================
 def encrypt(text, key):
     if not key or len(key.split(',')) != 2:
         raise ValueError("Key must be in format 'a,b' (e.g., 5,8)")
@@ -44,9 +38,7 @@ def encrypt(text, key):
     df = pd.DataFrame(dry_run)
     return df, cipher_text
 
-# =================================
 # DECRYPTION
-# =================================
 def decrypt(text, key):
     if not key or len(key.split(',')) != 2:
         raise ValueError("Key must be in format 'a,b' (e.g., 5,8)")

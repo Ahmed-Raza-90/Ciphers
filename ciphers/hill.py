@@ -2,9 +2,6 @@ import pandas as pd
 
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-# =============================
-# BASIC HELPERS
-# =============================
 def clean_text(text):
     return "".join(c for c in text.upper() if c.isalpha())
 
@@ -41,9 +38,6 @@ def is_valid_key_matrix(matrix):
         raise ValueError("Only 2x2 and 3x3 matrices supported")
     return gcd(det, 26) == 1
 
-# =============================
-# MATRIX MATH (NO NUMPY)
-# =============================
 def matrix_multiply(A, B):
     result = [[0] for _ in range(len(A))]
     for i in range(len(A)):
@@ -52,7 +46,7 @@ def matrix_multiply(A, B):
         result[i][0] %= 26
     return result
 
-# ---------- 2x2 ----------
+# 2x2 Matrix
 def det_2x2(m):
     return (m[0][0]*m[1][1] - m[0][1]*m[1][0]) % 26
 
@@ -65,7 +59,7 @@ def inv_2x2(m):
     ]
     return det, det_inv, inv
 
-# ---------- 3x3 ----------
+# 3x3 Matrix
 def det_3x3(m):
     return (
         m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])
@@ -98,9 +92,7 @@ def inv_3x3(m):
     inv = [[(adj[j][i] * det_inv) % 26 for i in range(3)] for j in range(3)]
     return det, det_inv, adj, inv
 
-# =============================
 # ENCRYPTION
-# =============================
 def hill_encrypt(text, key):
     if not is_valid_key_matrix(key):
         raise ValueError("Key matrix is invalid: determinant not invertible mod 26")
@@ -127,9 +119,7 @@ def hill_encrypt(text, key):
 
     return pd.DataFrame(rows), result
 
-# =============================
 # DECRYPTION
-# =============================
 def hill_decrypt(text, key):
     if not is_valid_key_matrix(key):
         raise ValueError("Key matrix is invalid: determinant not invertible mod 26")

@@ -1,8 +1,5 @@
 import pandas as pd
 
-# ================================
-# CAESAR ENCRYPT (NORMAL)
-# ================================
 def encrypt(text, shift):
     result = ""
     for ch in text:
@@ -13,17 +10,10 @@ def encrypt(text, shift):
             result += ch
     return result
 
-
-# ================================
-# CAESAR DECRYPT (NORMAL)
-# ================================
 def decrypt(text, shift):
     return encrypt(text, -shift)
 
-
-# ================================
-# CAESAR ENCRYPT WITH DRY RUN
-# ================================
+# ENCRYPT
 def encrypt_with_table(text, shift):
     rows = []
 
@@ -52,10 +42,7 @@ def encrypt_with_table(text, shift):
 
     return pd.DataFrame(rows)
 
-
-# ================================
-# CAESAR DECRYPT WITH DRY RUN
-# ================================
+# DECRYPT
 def decrypt_with_table(text, shift):
     rows = []
 

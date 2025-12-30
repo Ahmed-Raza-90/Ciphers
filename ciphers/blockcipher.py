@@ -1,23 +1,13 @@
 import pandas as pd
 
-# =================================
-# HELPER FUNCTIONS
-# =================================
 def letter_to_num(c):
     return ord(c.upper()) - ord('A')
 
 def num_to_letter(n):
     return chr(n + ord('A'))
 
-# =================================
 # ENCRYPTION
-# =================================
 def encrypt(text, key):
-    """
-    Simple Block Cipher:
-    - Block size = length of key
-    - Each letter in block shifted by corresponding key letter (A=0..Z=25)
-    """
     key = key.upper()
     block_size = len(key)
     dry_run = {"Block": [], "Plain Block": [], "Key Block": [], "Cipher Block": []}
@@ -40,9 +30,7 @@ def encrypt(text, key):
     df = pd.DataFrame(dry_run)
     return df, cipher_text
 
-# =================================
 # DECRYPTION
-# =================================
 def decrypt(text, key):
     key = key.upper()
     block_size = len(key)
