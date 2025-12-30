@@ -1,16 +1,25 @@
 import pandas as pd
 
-# =================================
+# =========================
+# FLEXIBLE KEY PARSER
+# =========================
+def parse_key(key):
+    if isinstance(key, str):
+        key = key.strip()
+        if key.startswith("[") and key.endswith("]"):
+            key = key[1:-1]
+        return [int(k.strip()) for k in key.split(",")]
+    elif isinstance(key, list):
+        return [int(k) for k in key]
+    else:
+        raise ValueError("Key must be a list or comma-separated string")
+
+# =========================
 # ENCRYPTION
-# =================================
+# =========================
 def encrypt(text, key):
-    """
-    Simple Permutation Cipher
-    - key = list of indices showing new order
-    Example: key = [3,1,2,0] means 0th char goes to 3rd, 1st to 1st, etc.
-    """
     text = text.replace(" ", "").upper()
-    key = [int(k) for k in key.split(",")]
+    key = parse_key(key)
     block_size = len(key)
     dry_run = {"Block": [], "Plain Block": [], "Key": [], "Cipher Block": []}
     cipher_text = ""
@@ -25,18 +34,18 @@ def encrypt(text, key):
         cipher_text += "".join(cipher_block)
         dry_run["Block"].append(i//block_size + 1)
         dry_run["Plain Block"].append(block)
-        dry_run["Key"].append(key)
+        dry_run["Key"].append(key.copy())
         dry_run["Cipher Block"].append("".join(cipher_block))
 
     df = pd.DataFrame(dry_run)
     return df, cipher_text
 
-# =================================
+# =========================
 # DECRYPTION
-# =================================
+# =========================
 def decrypt(text, key):
     text = text.replace(" ", "").upper()
-    key = [int(k) for k in key.split(",")]
+    key = parse_key(key)
     block_size = len(key)
     dry_run = {"Block": [], "Cipher Block": [], "Key": [], "Plain Block": []}
     plain_text = ""
@@ -49,7 +58,7 @@ def decrypt(text, key):
         plain_text += "".join(plain_block)
         dry_run["Block"].append(i//block_size + 1)
         dry_run["Cipher Block"].append(block)
-        dry_run["Key"].append(key)
+        dry_run["Key"].append(key.copy())
         dry_run["Plain Block"].append("".join(plain_block))
 
     df = pd.DataFrame(dry_run)
