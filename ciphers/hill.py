@@ -13,12 +13,33 @@ def pad_text(text, size):
         text += "X"
     return text
 
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
 def mod_inverse(a, m=26):
+    if gcd(a, m) != 1:
+        raise ValueError(f"Determinant {a} has no modular inverse mod {m} (invalid key)")
     a %= m
     for i in range(1, m):
         if (a * i) % m == 1:
             return i
-    raise ValueError("Determinant has no modular inverse (invalid key)")
+    raise ValueError("Unexpected error in mod_inverse")
+
+def is_valid_key_matrix(matrix):
+    size = len(matrix)
+    if size == 2:
+        det = (matrix[0][0]*matrix[1][1] - matrix[0][1]*matrix[1][0]) % 26
+    elif size == 3:
+        det = (
+            matrix[0][0]*(matrix[1][1]*matrix[2][2]-matrix[1][2]*matrix[2][1])
+          - matrix[0][1]*(matrix[1][0]*matrix[2][2]-matrix[1][2]*matrix[2][0])
+          + matrix[0][2]*(matrix[1][0]*matrix[2][1]-matrix[1][1]*matrix[2][0])
+        ) % 26
+    else:
+        raise ValueError("Only 2x2 and 3x3 matrices supported")
+    return gcd(det, 26) == 1
 
 # =============================
 # MATRIX MATH (NO NUMPY)
@@ -81,6 +102,8 @@ def inv_3x3(m):
 # ENCRYPTION
 # =============================
 def hill_encrypt(text, key):
+    if not is_valid_key_matrix(key):
+        raise ValueError("Key matrix is invalid: determinant not invertible mod 26")
     size = len(key)
     text = pad_text(clean_text(text), size)
 
@@ -108,6 +131,8 @@ def hill_encrypt(text, key):
 # DECRYPTION
 # =============================
 def hill_decrypt(text, key):
+    if not is_valid_key_matrix(key):
+        raise ValueError("Key matrix is invalid: determinant not invertible mod 26")
     size = len(key)
     text = pad_text(clean_text(text), size)
 
@@ -124,7 +149,6 @@ def hill_decrypt(text, key):
         vec = [[ALPHABET.index(c)] for c in block]
         plain_vec = matrix_multiply(inv_key, vec)
 
-        # Full calculation string
         calc_str = f"{inv_key} x {[v[0] for v in vec]} = {[v[0] for v in plain_vec]}"
 
         rows.append({

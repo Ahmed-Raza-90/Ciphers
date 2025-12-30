@@ -236,7 +236,7 @@ from ciphers.stream import encrypt as stream_encrypt, decrypt as stream_decrypt
 from ciphers.blockcipher import encrypt as block_encrypt, decrypt as block_decrypt
 from ciphers.columnar import encrypt as columnar_encrypt, decrypt as columnar_decrypt
 from ciphers.permutation import encrypt as permutation_encrypt, decrypt as permutation_decrypt
-from ciphers.hill import hill_encrypt, hill_decrypt   # ✅ ADDED
+from ciphers.hill import hill_encrypt, hill_decrypt   # ✅ Hill Cipher Added
 
 # =========================
 # STREAMLIT UI
@@ -284,41 +284,23 @@ else:
 # =========================
 # KEY HINTS
 # =========================
-if cipher == "Caesar Cipher":
-    st.sidebar.info("Key: Number (shift value), e.g., 3")
+cipher_key_hints = {
+    "Caesar Cipher": "Key: Number (shift value), e.g., 3",
+    "Playfair Cipher": "Key: Any word or phrase (letters only, J is replaced with I)",
+    "Vigenere Cipher": "Key: Letters only",
+    "Rail Fence Cipher": "Key: Number of rails, e.g., 3",
+    "Affine Cipher": "Key format: a,b (e.g., 5,8)",
+    "Monoalphabetic Cipher": "Key: 26 unique letters",
+    "Vernam Cipher": "Key: Same length as text",
+    "Stream Cipher": "Key: Letters only",
+    "Block Cipher": "Key: Letters only",
+    "Columnar Cipher": "Key: Letters only",
+    "Permutation Cipher": "Key: Comma-separated indices",
+    "Hill Cipher": "Key: Matrix must be invertible mod 26"
+}
 
-elif cipher == "Playfair Cipher":
-    st.sidebar.info("Key: Any word or phrase (letters only, J is replaced with I)")
-
-elif cipher == "Vigenere Cipher":
-    st.sidebar.info("Key: Letters only")
-
-elif cipher == "Rail Fence Cipher":
-    st.sidebar.info("Key: Number of rails, e.g., 3")
-
-elif cipher == "Affine Cipher":
-    st.sidebar.info("Key format: a,b (e.g., 5,8)")
-
-elif cipher == "Monoalphabetic Cipher":
-    st.sidebar.info("Key: 26 unique letters")
-
-elif cipher == "Vernam Cipher":
-    st.sidebar.info("Key: Same length as text")
-
-elif cipher == "Stream Cipher":
-    st.sidebar.info("Key: Letters only")
-
-elif cipher == "Block Cipher":
-    st.sidebar.info("Key: Letters only")
-
-elif cipher == "Columnar Cipher":
-    st.sidebar.info("Key: Letters only")
-
-elif cipher == "Permutation Cipher":
-    st.sidebar.info("Key: Comma-separated indices")
-
-elif cipher == "Hill Cipher":
-    st.sidebar.info("Key: Matrix must be invertible mod 26")
+if cipher in cipher_key_hints:
+    st.sidebar.info(cipher_key_hints[cipher])
 
 # =========================
 # RUN
@@ -335,8 +317,14 @@ if st.button("Run"):
                     st.stop()
                 key_matrix.append(nums)
 
+            # Hill Cipher with step-by-step dry run
             df, result = hill_encrypt(text, key_matrix) if mode == "Encrypt" else hill_decrypt(text, key_matrix)
+            
+            # Display step-by-step calculation
+            st.subheader("Step-by-Step Calculation")
             st.dataframe(df, use_container_width=True)
+            
+            # Display final result
             st.subheader("Result")
             st.code(result)
 
