@@ -1,46 +1,22 @@
-# 🔐 Classical Cryptography Simulator using Python & Streamlit
+# 🔐 Ciphers Tool (Streamlit Cryptography Simulator)
 
-## Overview
-
-This project is a complete **Classical Cryptography Simulator** built using **Python and Streamlit**.  
-It allows users to **encrypt and decrypt text** using multiple classical ciphers while also showing **step-by-step calculation tables** for learning and academic understanding.
-
-This is not a security product.  
-This is a **learning tool** designed for students studying Cryptography, Information Security, or Computer Science.
+This project is a Python-based Streamlit application that demonstrates multiple classical cryptography algorithms with full encryption and decryption support and step-by-step calculation tables.  
+The purpose of this project is learning, not real-world security.
 
 ---
 
-## Why This Project Exists
+## 🎯 Project Objective
 
-Most cryptography tools only give you input and output.  
-They hide the logic.
+Most students learn cryptography by memorizing formulas without understanding what actually happens behind the scenes. This project focuses on visualizing the complete encryption and decryption process so users can clearly see how plaintext, keys, and mathematical operations produce ciphertext.
 
-This project does the opposite.
-
-It **exposes the internal working** of each cipher:
-- character mapping
-- key expansion
-- matrix math
-- padding rules
-- intermediate tables
-
-If you understand this app, you understand classical cryptography. No shortcuts.
+This tool is designed for:
+- Cryptography and Information Security students
+- University lab work and demonstrations
+- Anyone who wants to understand classical ciphers properly
 
 ---
 
-## Features
-
-- Encrypt and decrypt messages
-- Supports multiple classical ciphers
-- Automatic input cleaning and padding
-- Step-by-step tables using Pandas
-- Interactive UI using Streamlit
-- Strong validation for keys and input
-- Modular cipher architecture
-
----
-
-## Implemented Ciphers
+## 🧠 Implemented Ciphers
 
 ### Substitution Ciphers
 - Caesar Cipher
@@ -59,32 +35,33 @@ If you understand this app, you understand classical cryptography. No shortcuts.
 - Block Cipher
 
 ### Matrix-Based Cipher
-- Hill Cipher (2×2 and 3×3)
+- Hill Cipher (2x2 and 3x3 matrices)
 
 ### Digraph Cipher
 - Playfair Cipher
 
----
-
-## Tech Stack
-
-- **Python 3**
-- **Streamlit** (UI)
-- **Pandas** (tables and dry runs)
-
-No frameworks.  
-No unnecessary libraries.  
-Everything is visible and readable.
+Each cipher supports both encryption and decryption, along with step-by-step tables wherever logical.
 
 ---
 
-## Project Structure
+## 🖥️ User Interface
 
-```
+- Built using Streamlit
+- Sidebar-based cipher and mode selection
+- Dynamic key input fields depending on selected cipher
+- Step-by-step calculation tables displayed using Pandas
+- Clear error messages for invalid keys or inputs
+
+The interface is kept simple and focused on learning, not visuals.
+
+---
+
+## 📁 Project Structure
 
 Ciphers/
 │
 ├── app.py
+├── README.md
 ├── requirements.txt
 │
 └── ciphers/
@@ -93,7 +70,7 @@ Ciphers/
 ├── vigenere.py
 ├── railfence.py
 ├── affine.py
-├── monoalphabetic.py
+├── monoalpha.py
 ├── vernam.py
 ├── stream.py
 ├── blockcipher.py
@@ -101,242 +78,120 @@ Ciphers/
 ├── permutation.py
 └── hill.py
 
-```
 
-Each cipher is isolated in its own file.  
-No spaghetti code.
+Each cipher is implemented in a separate module to keep the code clean and easy to understand.
 
 ---
 
-## Installation
+## ⚙️ Installation
 
-### Prerequisites
-- Python 3.9 or above
-- pip
+### Requirements
+- Python 3.9 or higher
+- pip package manager
 
-### Install Dependencies
-
-```
+### Install dependencies
 
 pip install -r requirements.txt
 
-```
-
-Contents of `requirements.txt`:
-```
-
-streamlit
-pandas
-
-```
+Libraries used:
+- streamlit
+- pandas
 
 ---
 
-## Running the Application
+## ▶️ Run the Application
 
-From the root directory:
+From the project root directory, run:
 
-```
+python streamlit run app.py
 
-streamlit run app.py
+The application will open automatically in your default web browser.
 
-```
-
-The app opens automatically in your browser.
-
----
-
-## How the App Works
+## 🧪 How to Use
 
 1. Select a cipher from the sidebar
-2. Choose Encrypt or Decrypt
-3. Enter plaintext or ciphertext
+2. Choose Encrypt or Decrypt mode
+3. Enter the input text
 4. Enter the required key
-5. Click Run
-6. View:
-   - final result
-   - calculation tables
-   - intermediate steps
+5. Click the Run button
 
-If the key is invalid, the app stops immediately and explains why.
+The application will display:
+- A detailed calculation table
+- The final encrypted or decrypted result
 
-No silent failures.
+If the input or key is invalid, execution stops with an error message.
 
----
-
-## Key Formats (Important)
+## 🔑 Key Formats
 
 ### Caesar Cipher
-```
-
-3
-
-```
+Only number like 3
 
 ### Playfair Cipher
-```
-
-keyword
-
-```
-- Letters only
-- J is replaced with I automatically
+Keyword
+Letters only. J is automatically replaced with I.
 
 ### Vigenere / Stream / Block / Columnar
-```
-
-KEY
-
-```
+Key
 
 ### Rail Fence Cipher
-```
-
-3
-
-```
+Dept like 2,3
 
 ### Affine Cipher
-```
-
-a,b
-
-```
-Example:
-```
-
-5,8
-
-```
-`a` must be coprime with 26 or encryption is rejected.
+a,b eg => 5,8
+The value of `a` must be coprime with 26.
 
 ### Monoalphabetic Cipher
-```
-
-QWERTYUIOPASDFGHJKLZXCVBNM
-
-```
-Rules:
-- Exactly 26 letters
-- No duplicates
-- A–Z only
+"QWERTYUIOPASDFGHJKLZXCVBNM"
+Must contain exactly 26 unique letters.
 
 ### Vernam Cipher
-```
-
-KEYMATCHINGTEXT
-
-```
-Key length must match plaintext length (spaces ignored).
+KEY MATCHING TEXT
+Key length must match the plaintext length (excluding spaces).
 
 ### Permutation Cipher
-```
-
 2,0,1
-
-```
 
 ### Hill Cipher
 
-- Matrix size: 2×2 or 3×3
-- Values must be between 0 and 25
-- Determinant must have a modular inverse mod 26
+- Matrix size: 2x2 or 3x3
+- Values between 0 and 25
+- Determinant must be invertible mod 26
 
-Example (2×2):
-```
-
+Example (2x2 matrix):
 3 3
 2 5
 
-```
+## 🧮 Hill Cipher Details
 
-Invalid matrices are rejected instantly.
+- Plaintext is cleaned and padded with X if required
+- Displays numeric vectors and matrix multiplication
+- Shows intermediate and final results clearly
+- Invalid key matrices are rejected immediately
+
+This strict validation ensures correct cryptographic behavior.
+
+## 📸 Screenshots
+
+Create a folder named `screenshots` in the project root and add the following images:
+
 
 ---
 
-## Hill Cipher Internals
+## ⚠️ Disclaimer
 
-- Plaintext cleaned and padded using X
-- Characters converted to numbers (A=0 … Z=25)
-- Matrix multiplication shown step-by-step
-- Determinant and modular inverse calculated
-- Final ciphertext produced after mod 26
-
-This cipher has the **most detailed dry run** in the project.
-
----
-
-## Screenshots
-
-Create a folder named `screenshots` in the root directory.
-
-```
-
-screenshots/
-├── home.png
-├── caesar.png
-├── playfair.png
-├── hill.png
-├── railfence.png
-├── error.png
-
-```
-
-### Required Screenshots
-
-1. Home screen with sidebar
-2. Caesar cipher encryption with table
-3. Playfair cipher 5×5 matrix
-4. Hill cipher matrix and calculations
-5. Rail Fence zigzag pattern
-6. Invalid key error message
-
-### Add screenshots like this:
-
-```
-
-![Hill Cipher](screenshots/hill.png)
-
-```
-
----
-
-## Academic Use
-
-This project is suitable for:
-- Cryptography labs
-- Semester projects
-- Demonstrations
-- Viva preparation
-- Teaching classical encryption
-
----
-
-## Disclaimer
-
-All implemented ciphers are **cryptographically weak**.  
-They must **never** be used to protect real data.
-
-This project exists only for **education and learning**.
-
----
-
-## Author
-
-**Ahmed Raza**  
-BSCS | AI Student  
-GitHub: https://github.com/Ahmed-Raza-90
-
----
-
-## Future Improvements
-
-- Frequency analysis
-- Cipher attacks
-- Performance comparison
-- Export tables as CSV
-- Animated visualizations
+This project is strictly for educational use.  
+All implemented ciphers are cryptographically weak and should never be used for real-world data protection.
 
 
-If this README feels long, good.  
-Serious projects don’t look small.
+## 👤 Author
+
+Ahmed Raza  
+GitHub: https://github.com/Ahmed-Raza-90/
+
+## 🚀 Future Improvements
+
+- Frequency analysis tools
+- Cipher attack demonstrations
+- Modern cipher demonstrations (AES for learning only)
+- Export step-by-step tables as CSV files
+
