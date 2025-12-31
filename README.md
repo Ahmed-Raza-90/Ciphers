@@ -87,6 +87,13 @@ Ciphers/
 ├── app.py
 ├── requirements.txt
 │
+└── screenshots/
+├── home.png
+├── caesar.png
+├── playfair.png
+├── hill.png
+├── railfence.png
+├── error.png
 └── ciphers/
 ├── caesar.py
 ├── playfair.py
@@ -266,38 +273,25 @@ This cipher has the **most detailed dry run** in the project.
 
 ---
 
-## Screenshots
+## 📸 Application Screenshots
 
-Create a folder named `screenshots` in the root directory.
+### 1. Home Screen with Sidebar
+![Home Screen](screenshots/home.png)
 
-```
+### 2. Caesar Cipher Encryption with Table
+![Caesar Cipher](screenshots/caesar.png)
 
-screenshots/
-├── home.png
-├── caesar.png
-├── playfair.png
-├── hill.png
-├── railfence.png
-├── error.png
+### 3. Playfair Cipher 5×5 Matrix
+![Playfair Cipher](screenshots/playfair.png)
 
-```
-
-### Required Screenshots
-
-1. Home screen with sidebar
-2. Caesar cipher encryption with table
-3. Playfair cipher 5×5 matrix
-4. Hill cipher matrix and calculations
-5. Rail Fence zigzag pattern
-6. Invalid key error message
-
-### Add screenshots like this:
-
-```
-
+### 4. Hill Cipher Matrix and Calculations
 ![Hill Cipher](screenshots/hill.png)
 
-```
+### 5. Rail Fence Cipher Zigzag Pattern
+![Rail Fence Cipher](screenshots/railfence.png)
+
+### 6. Invalid Key Error Message
+![Error Handling](screenshots/error.png)
 
 ---
 
@@ -324,7 +318,6 @@ This project exists only for **education and learning**.
 ## Author
 
 **Ahmed Raza**  
-BSCS | AI Student  
 GitHub: https://github.com/Ahmed-Raza-90
 
 ---
