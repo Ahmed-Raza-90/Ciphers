@@ -1,4 +1,4 @@
-# 🔐 Classical Cryptography Simulator using Python & Streamlit
+# 🔐 Cryptography Simulator using Python & Streamlit
 
 ## Overview
 
