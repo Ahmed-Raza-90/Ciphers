@@ -10,7 +10,7 @@ This is a **learning tool** designed for students studying Cryptography, Informa
 
 ## Live Demo
 
-[Ciphers Cryptography Simulator](https://ciphers-cryptography.streamlit.app/)
+Try the app online here: [Ciphers Cryptography Simulator](https://ciphers-cryptography.streamlit.app/)
 
 
 ---
