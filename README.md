@@ -85,6 +85,7 @@ Everything is visible and readable.
 Ciphers/
 │
 ├── app.py
+├── README.md
 ├── requirements.txt
 │
 └── screenshots/
@@ -329,3 +330,5 @@ GitHub: https://github.com/Ahmed-Raza-90
 - Performance comparison
 - Export tables as CSV
 - Animated visualizations
+
+---
